@@ -1,0 +1,13 @@
+2017-11-20 21:25:34.415 [info]  {Hangman.Server, "Ed"} #PID<0.345.0> saving %Hangman.Game{game_state: :good_guess, letters: ["t", "r", "a", "c", "k", "e", "d"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-20 21:25:43.513 [info]  {Hangman.Server, "Ed"} #PID<0.188.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["n", "o", "v", "e", "m", "b", "e", "r"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-21 16:47:53.096 [info]  {Hangman.Server, "Ed"} #PID<0.301.0> saving %Hangman.Game{game_state: :good_guess, letters: ["p", "h", "o", "t", "o", "g", "r", "a", "p", "h", "y"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-21 16:48:00.716 [info]  {Hangman.Server, "Ed"} #PID<0.183.0> saving %Hangman.Game{game_state: :good_guess, letters: ["a", "d", "a", "p", "t", "e", "r"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-21 17:58:21.883 [info]  {Hangman.Server, "Ed"} #PID<0.301.0> saving %Hangman.Game{game_state: :good_guess, letters: ["m", "a", "n", "u", "f", "a", "c", "t", "u", "r", "i", "n", "g"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-21 19:07:57.516 [info]  {Hangman.Server, "Ed"} #PID<0.309.0> saving %Hangman.Game{game_state: :good_guess, letters: ["n", "a", "k", "e", "d"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-21 19:15:49.229 [info]  {Hangman.Server, "Ed"} #PID<0.328.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["r", "e", "c", "o", "v", "e", "r"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-21 20:10:50.721 [info]  {Hangman.Server, "Ed"} #PID<0.309.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["t", "e", "e", "n", "s"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-21 20:14:36.401 [info]  {Hangman.Server, "Ed"} #PID<0.309.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["z", "o", "n", "e", "s"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-21 20:54:54.112 [info]  {Hangman.Server, "Ed"} #PID<0.309.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["c", "y", "c", "l", "i", "n", "g"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-22 16:25:10.914 [info]  {Hangman.Server, "Ed"} #PID<0.306.0> saving %Hangman.Game{game_state: :good_guess, letters: ["a", "n", "i", "m", "a", "t", "i", "o", "n"], player: "Ed", turns_left: 7, used: #MapSet<["a"]>}
+2017-11-24 17:51:07.619 [info]  {Hangman.Server, "Ed"} #PID<0.301.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["c", "l", "i", "m", "b"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
+2017-11-24 17:56:18.861 [info]  {Hangman.Server, "Ed"} #PID<0.301.0> saving %Hangman.Game{game_state: :bad_guess, letters: ["c", "r", "o", "w", "d"], player: "Ed", turns_left: 6, used: #MapSet<["a"]>}
