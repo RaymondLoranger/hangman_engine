@@ -2,18 +2,37 @@
 # and its dependencies with the aid of the Mix.Config module.
 use Mix.Config
 
-config :elixir, ansi_enabled: true # mix messages in colors
+# Mix messages in colors...
+config :elixir, ansi_enabled: true
 
-config :hangman, registry: Hangman.Reg
+# Listed by ascending log level...
+config :logger, :console,
+  colors: [
+    debug: :light_cyan,
+    info: :light_green,
+    warn: :light_yellow,
+    error: :light_red
+  ]
 
-config :logger, backends: [
-  # :console,
-  {LoggerFileBackend, :info_log}
-]
-config :logger, compile_time_purge_level: :info # purges debug messages
-# config :logger, level: :error # uncomment to stop logging
-format = "$date $time [$level] $levelpad$message\n"
-config :logger, :info_log, format: format
-config :logger, :info_log, path: "./log/info.log", level: :info
+config :logger,
+  backends: [
+    # :console,
+    {LoggerFileBackend, :info_log}
+  ]
+
+# Purges debug messages...
+config :logger, compile_time_purge_level: :info
+
+# Keeps only error messages...
+# config :logger, compile_time_purge_level: :error
+
+# Uncomment to stop logging...
+# config :logger, level: :error
+
+config :logger, :info_log,
+  format: "$date $time [$level] $levelpad$message\n",
+  path: File.cwd!() |> Path.join("log/info.log"),
+  level: :info
 
 #     import_config "#{Mix.env}.exs"
+import_config "persist.exs"

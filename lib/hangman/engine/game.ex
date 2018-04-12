@@ -1,18 +1,18 @@
-defmodule Hangman.Game do
+defmodule Hangman.Engine.Game do
   # @moduledoc """
   # Implements a Hangman game.
   # """
   @moduledoc false
 
   alias __MODULE__
+  alias Hangman.Dictionary
 
-  defstruct(
-    player: "",
-    turns_left: 7,
-    game_state: :initializing,
-    letters: [],
-    used: MapSet.new()
-  )
+  @enforce_keys [:player, :letters]
+  defstruct player: "",
+            turns_left: 7,
+            game_state: :initializing,
+            letters: [],
+            used: MapSet.new()
 
   @type state ::
           :initializing
@@ -22,12 +22,12 @@ defmodule Hangman.Game do
           | :lost
           | :won
   @type t :: %Game{
-               player: String.t,
-               turns_left: non_neg_integer,
-               game_state: state,
-               letters: [String.codepoint],
-               used: MapSet.t
-             }
+          player: String.t(),
+          turns_left: non_neg_integer,
+          game_state: state,
+          letters: [String.codepoint()],
+          used: MapSet.t(String.codepoint())
+        }
   @type tally :: map
 
   @doc """
@@ -35,26 +35,27 @@ defmodule Hangman.Game do
 
   ## Examples
 
-      iex> alias Hangman.Game
+      iex> alias Hangman.Engine.Game
       iex> Game.new_game("Mr. Smith").game_state
       :initializing
   """
-  @spec new_game(String.t, String.t) :: t
+  @spec new_game(String.t(), String.t()) :: t
   def new_game(player, word \\ Dictionary.random_word()) do
     %Game{player: player, letters: String.codepoints(word)}
   end
 
-  @spec make_move(t, String.codepoint) :: t
+  @spec make_move(t, String.codepoint()) :: t
   def make_move(%Game{game_state: state} = game, _guess)
       when state in [:won, :lost],
       do: game
+
   # Guess may be invalid: should be validated upstream...
   def make_move(%Game{} = game, guess) do
     accept_move(game, guess, MapSet.member?(game.used, guess))
   end
 
   @spec tally(t) :: tally
-  def tally(game) do
+  def tally(%Game{} = game) do
     %{
       game_state: game.game_state,
       turns_left: game.turns_left,
@@ -64,34 +65,39 @@ defmodule Hangman.Game do
 
   ## Private functions
 
-  @spec reveal_guessed([String.codepoint], MapSet.t) :: [String.codepoint]
+  @spec reveal_guessed([String.codepoint()], MapSet.t()) :: [String.codepoint()]
   defp reveal_guessed(letters, used) do
-    Enum.map(letters, & MapSet.member?(used, &1) && &1 || "_")
+    letters |> Enum.map(&if MapSet.member?(used, &1), do: &1, else: "_")
   end
 
-  @spec accept_move(t, String.codepoint, boolean) :: t
+  @spec accept_move(t, String.codepoint(), boolean) :: t
   defp accept_move(game, _guess, _already_guessed = true) do
     struct(game, game_state: :already_used)
   end
+
   defp accept_move(game, guess, _never_guessed) do
-    game
-    |> struct(used: MapSet.put(game.used, guess))
+    game.used
+    |> update_in(&MapSet.put(&1, guess))
     |> score_guess(Enum.member?(game.letters, guess))
   end
 
   @spec score_guess(t, boolean) :: t
   defp score_guess(game, _good_guess = true) do
-    game_state =
+    state =
       game.letters
       |> MapSet.new()
       |> MapSet.subset?(game.used)
       |> if(do: :won, else: :good_guess)
-    struct(game, game_state: game_state)
+
+    struct(game, game_state: state)
   end
+
   defp score_guess(%Game{turns_left: 1} = game, _bad_guess) do
     struct(game, game_state: :lost, turns_left: 0)
   end
+
   defp score_guess(%Game{turns_left: 0} = game, _bad_guess), do: game
+
   defp score_guess(%Game{turns_left: turns_left} = game, _bad_guess) do
     struct(game, game_state: :bad_guess, turns_left: turns_left - 1)
   end

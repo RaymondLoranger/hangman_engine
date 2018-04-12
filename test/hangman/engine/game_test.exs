@@ -1,46 +1,45 @@
-defmodule Hangman.GameTest do
+defmodule Hangman.Engine.GameTest do
   @moduledoc false
 
   use ExUnit.Case, async: true
 
-  alias Hangman.Game
+  alias Hangman.Engine.Game
 
   doctest Game
 
   setup_all do
-    games =
-      %{
-        random: Game.new_game("Rand"),
-        wibble: Game.new_game("Will", "wibble")
-      }
-    moves =
-      %{
-        winning: [
-          {"w", :good_guess, 7},
-          {"i", :good_guess, 7},
-          {"b", :good_guess, 7},
-          {"l", :good_guess, 7},
-          {"e", :won, 7}
-        ],
-        losing: [
-          {"m", :bad_guess, 6},
-          {"n", :bad_guess, 5},
-          {"o", :bad_guess, 4},
-          {"p", :bad_guess, 3},
-          {"q", :bad_guess, 2},
-          {"r", :bad_guess, 1},
-          {"s", :lost, 0}
-        ],
-        tester:
-          fn moves, game ->
-            Enum.reduce(moves, game, fn {guess, state, turns_left}, game ->
-              game = Game.make_move(game, guess)
-              assert game.game_state == state
-              assert game.turns_left == turns_left
-              game
-            end)
-          end
-      }
+    games = %{
+      random: Game.new_game("Rand"),
+      wibble: Game.new_game("Will", "wibble")
+    }
+
+    moves = %{
+      winning: [
+        {"w", :good_guess, 7},
+        {"i", :good_guess, 7},
+        {"b", :good_guess, 7},
+        {"l", :good_guess, 7},
+        {"e", :won, 7}
+      ],
+      losing: [
+        {"m", :bad_guess, 6},
+        {"n", :bad_guess, 5},
+        {"o", :bad_guess, 4},
+        {"p", :bad_guess, 3},
+        {"q", :bad_guess, 2},
+        {"r", :bad_guess, 1},
+        {"s", :lost, 0}
+      ],
+      tester: fn moves, game ->
+        Enum.reduce(moves, game, fn {guess, state, turns_left}, game ->
+          game = Game.make_move(game, guess)
+          assert game.game_state == state
+          assert game.turns_left == turns_left
+          game
+        end)
+      end
+    }
+
     {:ok, games: games, moves: moves}
   end
 
@@ -49,7 +48,7 @@ defmodule Hangman.GameTest do
       assert games.random.turns_left == 7
       assert games.random.game_state == :initializing
       assert length(games.random.letters) > 0
-      assert Enum.all?(games.random.letters, & &1 =~ ~r/[a-z]/)
+      assert Enum.all?(games.random.letters, &(&1 =~ ~r/[a-z]/))
     end
   end
 
