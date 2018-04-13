@@ -1,6 +1,8 @@
 # Hangman
 
-**TODO: Add description**
+Models the Hangman game.
+
+##### Based on the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
 
 ## Installation
 
