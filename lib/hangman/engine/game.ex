@@ -7,8 +7,8 @@ defmodule Hangman.Engine.Game do
   alias __MODULE__
   alias Hangman.Dictionary
 
-  @enforce_keys [:player_name, :letters]
-  defstruct player_name: "",
+  @enforce_keys [:game_name, :letters]
+  defstruct game_name: "",
             turns_left: 7,
             game_state: :initializing,
             letters: [],
@@ -22,7 +22,7 @@ defmodule Hangman.Engine.Game do
           | :lost
           | :won
   @type t :: %Game{
-          player_name: String.t(),
+          game_name: String.t(),
           turns_left: non_neg_integer,
           game_state: state,
           letters: [String.codepoint()],
@@ -40,8 +40,8 @@ defmodule Hangman.Engine.Game do
       :initializing
   """
   @spec new_game(String.t(), String.t()) :: t
-  def new_game(player_name, word \\ Dictionary.random_word()) do
-    %Game{player_name: player_name, letters: String.codepoints(word)}
+  def new_game(game_name, word \\ Dictionary.random_word()) do
+    %Game{game_name: game_name, letters: String.codepoints(word)}
   end
 
   @spec make_move(t, String.codepoint()) :: t
@@ -72,7 +72,7 @@ defmodule Hangman.Engine.Game do
 
   @spec accept_move(t, String.codepoint(), boolean) :: t
   defp accept_move(game, _guess, _already_guessed = true) do
-    struct(game, game_state: :already_used)
+    put_in(game.game_state, :already_used)
   end
 
   defp accept_move(game, guess, _never_guessed) do
@@ -89,16 +89,16 @@ defmodule Hangman.Engine.Game do
       |> MapSet.subset?(game.used)
       |> if(do: :won, else: :good_guess)
 
-    struct(game, game_state: state)
+    put_in(game.game_state, state)
   end
 
   defp score_guess(%Game{turns_left: 1} = game, _bad_guess) do
-    struct(game, game_state: :lost, turns_left: 0)
+    %Game{game | game_state: :lost, turns_left: 0}
   end
 
   defp score_guess(%Game{turns_left: 0} = game, _bad_guess), do: game
 
   defp score_guess(%Game{turns_left: turns_left} = game, _bad_guess) do
-    struct(game, game_state: :bad_guess, turns_left: turns_left - 1)
+    %Game{game | game_state: :bad_guess, turns_left: turns_left - 1}
   end
 end
