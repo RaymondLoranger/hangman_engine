@@ -1,6 +1,6 @@
 use Mix.Config
 
-config :hangman_dictionary,
+config :hangman_engine,
   course_ref:
     """
     Based on the course [Elixir for Programmers](https://codestool.
