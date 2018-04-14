@@ -14,9 +14,18 @@ config :logger, :console,
     error: :light_red
   ]
 
+format = "$date $time [$level] $levelpad$message\n"
+
+error_path = "./log/error.log"
+info_path = "./log/info.log"
+
+config :logger, :error_log, format: format, path: error_path, level: :error
+config :logger, :info_log, format: format, path: info_path, level: :info
+
 config :logger,
   backends: [
     # :console,
+    {LoggerFileBackend, :error_log},
     {LoggerFileBackend, :info_log}
   ]
 
@@ -27,12 +36,8 @@ config :logger, compile_time_purge_level: :info
 # config :logger, compile_time_purge_level: :error
 
 # Uncomment to stop logging...
-# config :logger, level: :error
-
-config :logger, :info_log,
-  format: "$date $time [$level] $levelpad$message\n",
-  path: File.cwd!() |> Path.join("log/info.log"),
-  level: :info
+config :logger, level: :error
 
 #     import_config "#{Mix.env}.exs"
 import_config "persist.exs"
+import_config "persist_course_ref.exs"

@@ -1,6 +1,15 @@
+# ┌──────────────────────────────────────────────────────────────┐
+# │ Based on the course "Elixir for Programmers" by Dave Thomas. │
+# └──────────────────────────────────────────────────────────────┘
 defmodule Hangman.Engine do
+  use PersistConfig
+
+  @course_ref Application.get_env(@app, :course_ref)
+
   @moduledoc """
   Models a Hangman game.
+
+  ##### #{@course_ref}
   """
 
   alias __MODULE__.{Game, Server, Sup}
