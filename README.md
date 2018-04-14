@@ -1,4 +1,4 @@
-# Hangman
+# Hangman Engine
 
 Models the Hangman game.
 
