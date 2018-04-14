@@ -7,7 +7,7 @@ defmodule Hangman.Engine do
   @course_ref Application.get_env(@app, :course_ref)
 
   @moduledoc """
-  Models a Hangman game...
+  Models a Hangman game.
 
   ##### #{@course_ref}
   """
@@ -26,8 +26,8 @@ defmodule Hangman.Engine do
       true
   """
   @spec new_game(String.t()) :: Supervisor.on_start_child()
-  def new_game(player) when is_binary(player) do
-    DynamicSupervisor.start_child(Sup, {Server, player})
+  def new_game(player_name) when is_binary(player_name) do
+    DynamicSupervisor.start_child(Sup, {Server, player_name})
   end
 
   @doc """
@@ -41,8 +41,8 @@ defmodule Hangman.Engine do
       :ok
   """
   @spec end_game(String.t()) :: :ok
-  def end_game(player) when is_binary(player) do
-    player |> Server.via() |> GenServer.stop(:shutdown)
+  def end_game(player_name) when is_binary(player_name) do
+    player_name |> Server.via() |> GenServer.stop(:shutdown)
   end
 
   @doc """
@@ -63,12 +63,12 @@ defmodule Hangman.Engine do
       true
   """
   @spec tally(String.t()) :: Game.tally()
-  def tally(player) when is_binary(player) do
-    player |> Server.via() |> GenServer.call(:tally)
+  def tally(player_name) when is_binary(player_name) do
+    player_name |> Server.via() |> GenServer.call(:tally)
   end
 
   @doc """
-  Makes a move and returns the tally.
+  Allows a player to guess a letter.
 
   ## Examples
 
@@ -78,7 +78,8 @@ defmodule Hangman.Engine do
       true
   """
   @spec make_move(String.t(), String.codepoint()) :: Game.tally()
-  def make_move(player, guess) when is_binary(player) and is_binary(guess) do
-    player |> Server.via() |> GenServer.call({:make_move, guess})
+  def make_move(player_name, guess)
+      when is_binary(player_name) and is_binary(guess) do
+    player_name |> Server.via() |> GenServer.call({:make_move, guess})
   end
 end

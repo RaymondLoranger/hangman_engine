@@ -7,8 +7,8 @@ defmodule Hangman.Engine.Game do
   alias __MODULE__
   alias Hangman.Dictionary
 
-  @enforce_keys [:player, :letters]
-  defstruct player: "",
+  @enforce_keys [:player_name, :letters]
+  defstruct player_name: "",
             turns_left: 7,
             game_state: :initializing,
             letters: [],
@@ -22,7 +22,7 @@ defmodule Hangman.Engine.Game do
           | :lost
           | :won
   @type t :: %Game{
-          player: String.t(),
+          player_name: String.t(),
           turns_left: non_neg_integer,
           game_state: state,
           letters: [String.codepoint()],
@@ -40,8 +40,8 @@ defmodule Hangman.Engine.Game do
       :initializing
   """
   @spec new_game(String.t(), String.t()) :: t
-  def new_game(player, word \\ Dictionary.random_word()) do
-    %Game{player: player, letters: String.codepoints(word)}
+  def new_game(player_name, word \\ Dictionary.random_word()) do
+    %Game{player_name: player_name, letters: String.codepoints(word)}
   end
 
   @spec make_move(t, String.codepoint()) :: t
@@ -49,7 +49,7 @@ defmodule Hangman.Engine.Game do
       when state in [:won, :lost],
       do: game
 
-  # Guess may be invalid: should be validated upstream...
+  # Guess not validated here; should be done in client interface...
   def make_move(%Game{} = game, guess) do
     accept_move(game, guess, MapSet.member?(game.used, guess))
   end

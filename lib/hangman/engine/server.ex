@@ -19,40 +19,41 @@ defmodule Hangman.Engine.Server do
   # @reg Application.get_env(@app, :registry)
 
   @spec start_link(String.t()) :: GenServer.on_start()
-  def start_link(player) do
-    GenServer.start_link(Server, player, name: via(player))
-  end
+  def start_link(player_name),
+    do: GenServer.start_link(Server, player_name, name: via(player_name))
 
   # @spec via(String.t) :: {:via, module, {atom, tuple}}
-  # def via(player), do: {:via, Registry, {@reg , key(player)}}
+  # def via(player_name), do: {:via, Registry, {@reg , key(player_name)}}
 
   @spec via(String.t()) :: {:global, tuple}
-  def via(player), do: {:global, key(player)}
+  def via(player_name), do: {:global, key(player_name)}
 
   ## Private functions
 
   @spec key(String.t()) :: tuple
-  defp key(player), do: {Server, player}
+  defp key(player_name), do: {Server, player_name}
 
   @spec save(Game.t()) :: Game.t()
   defp save(game) do
-    game |> text(@phrase) |> Logger.info()
-    true = :ets.insert(@ets, {key(game.player), game})
+    game |> text() |> Logger.info()
+    true = :ets.insert(@ets, {key(game.player_name), game})
     game
   end
 
   @spec text(Game.t(), String.t()) :: String.t()
-  defp text(game, phrase) do
-    key = game.player |> key() |> inspect()
-    self = self() |> inspect()
-    game = inspect(game, pretty: true)
-    "\n#{key} #{self}\n#{phrase}\n#{game}\n"
+  defp text(game, phrase \\ @phrase) do
+    """
+
+    #{game.player_name |> key() |> inspect()} #{self() |> inspect()}
+    #{phrase}
+    #{inspect(game, pretty: true)}
+    """
   end
 
   @spec game(String.t()) :: Game.t()
-  defp game(player) do
-    case :ets.lookup(@ets, key(player)) do
-      [] -> Game.new_game(player) |> save()
+  defp game(player_name) do
+    case :ets.lookup(@ets, key(player_name)) do
+      [] -> player_name |> Game.new_game() |> save()
       [{_key, game}] -> game
     end
   end
@@ -60,7 +61,7 @@ defmodule Hangman.Engine.Server do
   ## Callbacks
 
   @spec init(String.t()) :: {:ok, Game.t()}
-  def init(player), do: {:ok, game(player)}
+  def init(player_name), do: {:ok, game(player_name)}
 
   @spec handle_call(term, from, Game.t()) :: {:reply, Game.tally(), Game.t()}
   def handle_call({:make_move, guess}, _from, game) do
@@ -71,5 +72,6 @@ defmodule Hangman.Engine.Server do
   def handle_call(:tally, _from, game), do: {:reply, Game.tally(game), game}
 
   @spec terminate(term, Game.t()) :: true
-  def terminate(:shutdown, game), do: true = :ets.delete(@ets, key(game.player))
+  def terminate(:shutdown, game),
+    do: true = :ets.delete(@ets, key(game.player_name))
 end
