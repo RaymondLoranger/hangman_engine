@@ -74,4 +74,18 @@ defmodule Hangman.Engine.Server do
   @spec terminate(term, Game.t()) :: true
   def terminate(:shutdown, game),
     do: true = :ets.delete(@ets, key(game.game_name))
+
+  def terminate(reason, game) do
+    """
+
+    `terminate` reason:
+    #{inspect(reason)}
+
+    `game` to clean up:
+    #{inspect(game, pretty: true)}
+    """
+    |> Logger.error()
+
+    true = :ets.delete(@ets, key(game.game.name))
+  end
 end
