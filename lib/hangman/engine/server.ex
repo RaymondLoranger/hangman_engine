@@ -43,8 +43,7 @@ defmodule Hangman.Engine.Server do
   @spec text(Game.t(), String.t()) :: String.t()
   defp text(game, phrase \\ @phrase) do
     """
-
-    #{game.game_name |> key() |> inspect()} #{self() |> inspect()}
+    \n#{game.game_name |> key() |> inspect()} #{self() |> inspect()}
     #{phrase}
     #{inspect(game, pretty: true)}
     """
@@ -72,16 +71,16 @@ defmodule Hangman.Engine.Server do
   def handle_call(:tally, _from, game), do: {:reply, Game.tally(game), game}
 
   @spec terminate(term, Game.t()) :: true
-  def terminate(:shutdown, game),
-    do: true = :ets.delete(@ets, key(game.game_name))
+  def terminate(:shutdown, game) do
+    game |> text("shutting down...") |> Logger.info()
+    true = :ets.delete(@ets, key(game.game_name))
+  end
 
   def terminate(reason, game) do
     """
-
-    `terminate` reason:
+    \n`terminate` reason:
     #{inspect(reason)}
-
-    `game` to clean up:
+    \n`game` to clean up:
     #{inspect(game, pretty: true)}
     """
     |> Logger.error()

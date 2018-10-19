@@ -18,9 +18,9 @@ defmodule Hangman.Engine.Recover do
   defp restart_servers() do
     @ets
     |> :ets.match_object({{Server, :_}, :_})
-    |> Enum.each(fn {{Server, player}, _game} ->
+    |> Enum.each(fn {{Server, game_name}, _game} ->
       # Child may already be started...
-      DynamicSupervisor.start_child(Sup, {Server, player})
+      DynamicSupervisor.start_child(Sup, {Server, game_name})
     end)
   end
 

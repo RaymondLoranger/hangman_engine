@@ -10,7 +10,7 @@ defmodule Hangman.Engine.Sup do
 
   ## Callbacks
 
-  @dialyzer {:nowarn_function, init: 1}
+  # @dialyzer {:nowarn_function, init: 1}
   @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
   def init(:ok), do: DynamicSupervisor.init(strategy: :one_for_one)
 end
