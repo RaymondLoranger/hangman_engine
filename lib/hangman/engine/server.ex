@@ -71,18 +71,17 @@ defmodule Hangman.Engine.Server do
   def handle_call(:tally, _from, game), do: {:reply, Game.tally(game), game}
 
   @spec terminate(term, Game.t()) :: true
-  def terminate(:shutdown, game) do
-    game |> text("shutting down...") |> Logger.info()
+  def terminate(:shutdown = reason, game) do
+    game
+    |> text("terminating with reason #{inspect(reason)}...")
+    |> Logger.info()
+
     true = :ets.delete(@ets, key(game.game_name))
   end
 
   def terminate(reason, game) do
-    """
-    \n`terminate` reason:
-    #{inspect(reason)}
-    \n`game` to clean up:
-    #{inspect(game, pretty: true)}
-    """
+    game
+    |> text("terminating with reason #{inspect(reason)}...")
     |> Logger.error()
 
     true = :ets.delete(@ets, key(game.game.name))
