@@ -1,8 +1,7 @@
 defmodule Hangman.Engine.Server do
-  # @moduledoc """
-  # Implements a Hangman game server.
-  # """
-  @moduledoc false
+  @moduledoc """
+  Implements a _Hangman Game_ server.
+  """
 
   use GenServer, restart: :transient
   use PersistConfig

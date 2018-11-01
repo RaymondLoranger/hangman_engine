@@ -1,6 +1,4 @@
 defmodule Hangman.Engine.Recover do
-  @moduledoc false
-
   use GenServer
   use PersistConfig
 

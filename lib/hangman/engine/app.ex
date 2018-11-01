@@ -1,6 +1,4 @@
 defmodule Hangman.Engine.App do
-  @moduledoc false
-
   use Application
   use PersistConfig
 

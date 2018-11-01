@@ -1,8 +1,7 @@
 defmodule Hangman.Engine.Game do
-  # @moduledoc """
-  # Implements a Hangman game.
-  # """
-  @moduledoc false
+  @moduledoc """
+  Implements a _Hangman Game_.
+  """
 
   alias __MODULE__
   alias Hangman.Dictionary
@@ -31,7 +30,7 @@ defmodule Hangman.Engine.Game do
   @type tally :: map
 
   @doc """
-  Returns a new Hangman game with a `word` to be guessed.
+  Returns a new _Hangman Game_ with a `word` to be guessed.
 
   ## Examples
 
