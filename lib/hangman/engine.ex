@@ -7,7 +7,7 @@ defmodule Hangman.Engine do
   @course_ref Application.get_env(@app, :course_ref)
 
   @moduledoc """
-  Models a Hangman game.
+  Models the _Hangman Game_.
 
   ##### #{@course_ref}
   """
