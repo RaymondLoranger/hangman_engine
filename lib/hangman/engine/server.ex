@@ -51,7 +51,7 @@ defmodule Hangman.Engine.Server do
   @spec game(String.t()) :: Game.t()
   defp game(game_name) do
     case :ets.lookup(@ets, key(game_name)) do
-      [] -> game_name |> Game.new_game() |> save()
+      [] -> game_name |> Game.new() |> save()
       [{_key, game}] -> game
     end
   end

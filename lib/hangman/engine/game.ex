@@ -35,11 +35,11 @@ defmodule Hangman.Engine.Game do
   ## Examples
 
       iex> alias Hangman.Engine.Game
-      iex> Game.new_game("Mr. Smith").game_state
+      iex> Game.new("Mr. Smith").game_state
       :initializing
   """
-  @spec new_game(String.t(), String.t()) :: t
-  def new_game(game_name, word \\ Dictionary.random_word()) do
+  @spec new(String.t(), String.t()) :: t
+  def new(game_name, word \\ Dictionary.random_word()) do
     %Game{game_name: game_name, letters: String.codepoints(word)}
   end
 

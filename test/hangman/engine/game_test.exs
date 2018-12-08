@@ -7,8 +7,8 @@ defmodule Hangman.Engine.GameTest do
 
   setup_all do
     games = %{
-      random: Game.new_game("Rand"),
-      wibble: Game.new_game("Will", "wibble")
+      random: Game.new("Rand"),
+      wibble: Game.new("Will", "wibble")
     }
 
     moves = %{
@@ -41,7 +41,7 @@ defmodule Hangman.Engine.GameTest do
     {:ok, games: games, moves: moves}
   end
 
-  describe "Game.new_game/1" do
+  describe "Game.new/1" do
     test "returns struct", %{games: games} do
       assert games.random.turns_left == 7
       assert games.random.game_state == :initializing
@@ -50,7 +50,7 @@ defmodule Hangman.Engine.GameTest do
     end
   end
 
-  describe "Game.new_game/2" do
+  describe "Game.new/2" do
     test "returns struct", %{games: games} do
       assert games.wibble.turns_left == 7
       assert games.wibble.game_state == :initializing
