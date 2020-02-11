@@ -42,36 +42,38 @@ defmodule Hangman.Engine.GameTest do
   end
 
   describe "Game.new/1" do
-    test "returns struct", %{games: games} do
+    test "returns a struct", %{games: games} do
       assert games.random.turns_left == 7
       assert games.random.game_state == :initializing
       assert length(games.random.letters) > 0
       assert Enum.all?(games.random.letters, &(&1 =~ ~r/[a-z]/))
+      assert %{__struct__: Game} = games.random
     end
   end
 
   describe "Game.new/2" do
-    test "returns struct", %{games: games} do
+    test "returns a struct", %{games: games} do
       assert games.wibble.turns_left == 7
       assert games.wibble.game_state == :initializing
       assert games.wibble.letters == ~w[w i b b l e]
+      assert %{__struct__: Game} = games.wibble
     end
   end
 
   describe "Game.make_move/2" do
     test "game static once :won or :lost", %{games: games} do
       for state <- [:won, :lost] do
-        game = struct(games.random, game_state: state)
+        game = %Game{games.random | game_state: state}
         assert ^game = Game.make_move(game, "x")
       end
     end
 
-    test "first guess of letter: not already used", %{games: games} do
+    test "first guess of a letter: not already used", %{games: games} do
       game = Game.make_move(games.random, "x")
       refute game.game_state == :already_used
     end
 
-    test "second guess of letter: already used", %{games: games} do
+    test "second guess of a letter: already used", %{games: games} do
       game = Game.make_move(games.random, "x")
       refute game.game_state == :already_used
       game = Game.make_move(game, "x")

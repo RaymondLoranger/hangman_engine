@@ -1,4 +1,4 @@
-defmodule Hangman.Engine.App do
+defmodule Hangman.Engine.Top do
   use Application
   use PersistConfig
 
@@ -21,6 +21,6 @@ defmodule Hangman.Engine.App do
       # Child spec relying on use GenServer...
       {Recover, :ok}
     ]
-    |> Supervisor.start_link(name: App, strategy: :rest_for_one)
+    |> Supervisor.start_link(name: Top, strategy: :rest_for_one)
   end
 end
