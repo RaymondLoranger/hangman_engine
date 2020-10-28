@@ -1,4 +1,4 @@
-use Mix.Config
+import Config
 
 config :hangman_engine,
   course_ref:

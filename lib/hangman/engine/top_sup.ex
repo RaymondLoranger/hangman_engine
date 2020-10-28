@@ -1,9 +1,9 @@
-defmodule Hangman.Engine.Top do
+defmodule Hangman.Engine.TopSup do
   use Application
   use PersistConfig
 
   alias __MODULE__
-  alias Hangman.Engine.{Recover, Sup}
+  alias Hangman.Engine.{GameRecovery, GameSup}
 
   @ets Application.get_env(@app, :ets_name)
   # @reg Application.get_env(@app, :registry)
@@ -16,11 +16,11 @@ defmodule Hangman.Engine.Top do
       # {Registry, keys: :unique, name: @reg},
 
       # Child spec relying on use DynamicSupervisor...
-      {Sup, :ok},
+      {GameSup, :ok},
 
       # Child spec relying on use GenServer...
-      {Recover, :ok}
+      {GameRecovery, :ok}
     ]
-    |> Supervisor.start_link(name: Top, strategy: :rest_for_one)
+    |> Supervisor.start_link(name: TopSup, strategy: :rest_for_one)
   end
 end

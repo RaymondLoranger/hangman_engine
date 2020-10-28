@@ -1,6 +1,4 @@
-# This file is responsible for configuring your application
-# and its dependencies with the aid of the Mix.Config module.
-use Mix.Config
+import Config
 
 # Mix messages in colors...
 config :elixir, ansi_enabled: true
@@ -33,13 +31,13 @@ config :logger,
   ]
 
 # Purges debug messages...
-config :logger, compile_time_purge_level: :info
+config :logger, compile_time_purge_matching: [[level_lower_than: :info]]
 
 # Keeps only error messages...
-# config :logger, compile_time_purge_level: :error
+# config :logger, compile_time_purge_matching: [[level_lower_than: :error]]
 
 # Uncomment to stop logging...
 config :logger, level: :error
 
-#     import_config "#{Mix.env}.exs"
-import_config "persist_*.exs"
+import_config "persist_course_ref.exs"
+import_config "persist_ets_name.exs"

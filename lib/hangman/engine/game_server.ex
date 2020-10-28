@@ -1,4 +1,4 @@
-defmodule Hangman.Engine.Server do
+defmodule Hangman.Engine.GameServer do
   @moduledoc """
   Implements a _Hangman Game_ server.
   """
@@ -19,7 +19,7 @@ defmodule Hangman.Engine.Server do
 
   @spec start_link(String.t()) :: GenServer.on_start()
   def start_link(game_name),
-    do: GenServer.start_link(Server, game_name, name: via(game_name))
+    do: GenServer.start_link(GameServer, game_name, name: via(game_name))
 
   # @spec via(String.t) :: {:via, module, {atom, tuple}}
   # def via(game_name), do: {:via, Registry, {@reg , key(game_name)}}

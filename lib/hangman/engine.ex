@@ -12,7 +12,7 @@ defmodule Hangman.Engine do
   ##### #{@course_ref}
   """
 
-  alias __MODULE__.{Game, Server, Sup}
+  alias __MODULE__.{Game, GameServer, GameSup}
 
   @doc """
   Starts a new game.
@@ -27,7 +27,7 @@ defmodule Hangman.Engine do
   """
   @spec new_game(String.t()) :: Supervisor.on_start_child()
   def new_game(game_name) when is_binary(game_name) do
-    DynamicSupervisor.start_child(Sup, {Server, game_name})
+    DynamicSupervisor.start_child(GameSup, {GameServer, game_name})
   end
 
   @doc """
@@ -42,7 +42,7 @@ defmodule Hangman.Engine do
   """
   @spec end_game(String.t()) :: :ok
   def end_game(game_name) when is_binary(game_name) do
-    game_name |> Server.via() |> GenServer.stop(:shutdown)
+    game_name |> GameServer.via() |> GenServer.stop(:shutdown)
   end
 
   @doc """
@@ -64,7 +64,7 @@ defmodule Hangman.Engine do
   """
   @spec tally(String.t()) :: Game.tally()
   def tally(game_name) when is_binary(game_name) do
-    game_name |> Server.via() |> GenServer.call(:tally)
+    game_name |> GameServer.via() |> GenServer.call(:tally)
   end
 
   @doc """
@@ -80,6 +80,6 @@ defmodule Hangman.Engine do
   @spec make_move(String.t(), String.codepoint()) :: Game.tally()
   def make_move(game_name, guess)
       when is_binary(game_name) and is_binary(guess) do
-    game_name |> Server.via() |> GenServer.call({:make_move, guess})
+    game_name |> GameServer.via() |> GenServer.call({:make_move, guess})
   end
 end

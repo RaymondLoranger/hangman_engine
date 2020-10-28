@@ -1,26 +1,27 @@
-defmodule Hangman.Engine.Recover do
+defmodule Hangman.Engine.GameRecovery do
   @moduledoc false
 
   use GenServer
   use PersistConfig
 
   alias __MODULE__
-  alias Hangman.Engine.{Server, Sup}
+  alias Hangman.Engine.{GameServer, GameSup}
 
   @ets Application.get_env(@app, :ets_name)
 
   @spec start_link(term) :: GenServer.on_start()
-  def start_link(:ok), do: GenServer.start_link(Recover, :ok, name: Recover)
+  def start_link(:ok),
+    do: GenServer.start_link(GameRecovery, :ok, name: GameRecovery)
 
   ## Private functions
 
   @spec restart_servers() :: :ok
   defp restart_servers() do
     @ets
-    |> :ets.match_object({{Server, :_}, :_})
-    |> Enum.each(fn {{Server, game_name}, _game} ->
+    |> :ets.match_object({{GameServer, :_}, :_})
+    |> Enum.each(fn {{GameServer, game_name}, _game} ->
       # Child may already be started...
-      DynamicSupervisor.start_child(Sup, {Server, game_name})
+      DynamicSupervisor.start_child(GameSup, {GameServer, game_name})
     end)
   end
 
