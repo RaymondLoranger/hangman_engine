@@ -5,8 +5,8 @@ defmodule Hangman.Engine.TopSup do
   alias __MODULE__
   alias Hangman.Engine.{GameRecovery, GameSup}
 
-  @ets Application.get_env(@app, :ets_name)
-  # @reg Application.get_env(@app, :registry)
+  @ets get_env(:ets_name)
+  # @reg get_env(:registry)
 
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_type, :ok) do

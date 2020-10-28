@@ -38,7 +38,7 @@ defmodule Hangman.Engine.GameTest do
       end
     }
 
-    {:ok, games: games, moves: moves}
+    %{games: games, moves: moves}
   end
 
   describe "Game.new/1" do
@@ -93,11 +93,13 @@ defmodule Hangman.Engine.GameTest do
     end
 
     test "a guessed word is a won game", %{games: games, moves: moves} do
-      moves.tester.(moves.winning, games.wibble)
+      assert %Game{game_state: :won} =
+               moves.tester.(moves.winning, games.wibble)
     end
 
     test "a lost game is recognized", %{games: games, moves: moves} do
-      moves.tester.(moves.losing, games.wibble)
+      assert %Game{game_state: :lost} =
+               moves.tester.(moves.losing, games.wibble)
     end
   end
 end

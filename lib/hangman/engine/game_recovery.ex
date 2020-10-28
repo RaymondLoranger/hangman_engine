@@ -7,7 +7,7 @@ defmodule Hangman.Engine.GameRecovery do
   alias __MODULE__
   alias Hangman.Engine.{GameServer, GameSup}
 
-  @ets Application.get_env(@app, :ets_name)
+  @ets get_env(:ets_name)
 
   @spec start_link(term) :: GenServer.on_start()
   def start_link(:ok),

@@ -37,7 +37,7 @@ config :logger, compile_time_purge_matching: [[level_lower_than: :info]]
 # config :logger, compile_time_purge_matching: [[level_lower_than: :error]]
 
 # Uncomment to stop logging...
-config :logger, level: :error
+# config :logger, level: :error
 
 import_config "persist_course_ref.exs"
 import_config "persist_ets_name.exs"

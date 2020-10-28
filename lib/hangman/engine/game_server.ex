@@ -13,9 +13,9 @@ defmodule Hangman.Engine.GameServer do
 
   @typep from :: GenServer.from()
 
-  @ets Application.get_env(@app, :ets_name)
+  @ets get_env(:ets_name)
   @phrase "saving..."
-  # @reg Application.get_env(@app, :registry)
+  # @reg get_env(:registry)
 
   @spec start_link(String.t()) :: GenServer.on_start()
   def start_link(game_name),
@@ -30,7 +30,7 @@ defmodule Hangman.Engine.GameServer do
   ## Private functions
 
   @spec key(String.t()) :: tuple
-  defp key(game_name), do: {Server, game_name}
+  defp key(game_name), do: {GameServer, game_name}
 
   @spec save(Game.t()) :: Game.t()
   defp save(game) do
@@ -63,7 +63,7 @@ defmodule Hangman.Engine.GameServer do
 
   @spec handle_call(term, from, Game.t()) :: {:reply, Game.tally(), Game.t()}
   def handle_call({:make_move, guess}, _from, game) do
-    game = Game.make_move(game, guess) |> save()
+    game = game |> Game.make_move(guess) |> save()
     {:reply, Game.tally(game), game}
   end
 
