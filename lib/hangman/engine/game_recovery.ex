@@ -15,8 +15,8 @@ defmodule Hangman.Engine.GameRecovery do
 
   ## Private functions
 
-  @spec restart_servers() :: :ok
-  defp restart_servers() do
+  @spec restart_servers :: :ok
+  defp restart_servers do
     @ets
     |> :ets.match_object({{GameServer, :_}, :_})
     |> Enum.each(fn {{GameServer, game_name}, _game} ->
