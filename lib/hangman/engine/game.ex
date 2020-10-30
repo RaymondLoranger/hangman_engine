@@ -91,8 +91,9 @@ defmodule Hangman.Engine.Game do
     put_in(game.game_state, state)
   end
 
-  defp score_guess(%Game{turns_left: 1} = game, _bad_guess) do
-    %Game{game | game_state: :lost, turns_left: 0}
+  defp score_guess(%Game{turns_left: 1, letters: letters} = game, _bad_guess) do
+    # Update `used` to reveal all letters...
+    %Game{game | game_state: :lost, turns_left: 0, used: MapSet.new(letters)}
   end
 
   defp score_guess(%Game{turns_left: 0} = game, _bad_guess), do: game
