@@ -53,6 +53,11 @@ defmodule Hangman.Engine.Game do
     accept_move(game, guess, MapSet.member?(game.used, guess))
   end
 
+  @spec guess_word(t) :: t
+  def guess_word(%Game{letters: letters} = game) do
+    %Game{game | used: MapSet.new(letters)}
+  end
+
   @spec tally(t) :: tally
   def tally(%Game{} = game) do
     %{
@@ -91,9 +96,8 @@ defmodule Hangman.Engine.Game do
     put_in(game.game_state, state)
   end
 
-  defp score_guess(%Game{turns_left: 1, letters: letters} = game, _bad_guess) do
-    # Update `used` to reveal all letters...
-    %Game{game | game_state: :lost, turns_left: 0, used: MapSet.new(letters)}
+  defp score_guess(%Game{turns_left: 1} = game, _bad_guess) do
+    %Game{game | game_state: :lost, turns_left: 0}
   end
 
   defp score_guess(%Game{turns_left: 0} = game, _bad_guess), do: game

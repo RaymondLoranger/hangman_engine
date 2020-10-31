@@ -68,6 +68,28 @@ defmodule Hangman.Engine do
   end
 
   @doc """
+  Allows to guess the word of a game.
+
+  ## Examples
+
+      iex> alias Hangman.Engine
+      iex> Engine.new_game("Joe")
+      iex> tally = Engine.guess_word("Joe")
+      iex> %{
+      ...>   game_state: :initializing,
+      ...>   turns_left: 7,
+      ...>   letters: letters
+      ...> } = tally
+      iex> no_underscores? = Enum.all?(letters, & &1 != "_")
+      iex> is_list(letters) and no_underscores?
+      true
+  """
+  @spec guess_word(String.t()) :: Game.tally()
+  def guess_word(game_name) when is_binary(game_name) do
+    game_name |> GameServer.via() |> GenServer.call(:guess_word)
+  end
+
+  @doc """
   Allows a player to guess a letter.
 
   ## Examples
