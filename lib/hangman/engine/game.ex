@@ -54,8 +54,8 @@ defmodule Hangman.Engine.Game do
   end
 
   @spec guess_word(t) :: t
-  def guess_word(%Game{letters: letters} = game) do
-    %Game{game | used: MapSet.new(letters)}
+  def guess_word(%Game{letters: letters, used: used} = game) do
+    %Game{game | used: MapSet.union(used, MapSet.new(letters))}
   end
 
   @spec tally(t) :: tally
