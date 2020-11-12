@@ -2,14 +2,10 @@
 # │ Based on the course "Elixir for Programmers" by Dave Thomas. │
 # └──────────────────────────────────────────────────────────────┘
 defmodule Hangman.Engine do
-  use PersistConfig
-
-  @course_ref get_env(:course_ref)
-
   @moduledoc """
   Models the _Hangman Game_.
 
-  ##### #{@course_ref}
+  ##### Based on the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
   """
 
   alias __MODULE__.{Game, GameServer, GameSup}
