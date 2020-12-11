@@ -1,11 +1,9 @@
 defmodule Hangman.Engine.GameRecovery do
-  @moduledoc false
-
   use GenServer
   use PersistConfig
 
   alias __MODULE__
-  alias Hangman.Engine.{GameServer, GameSup}
+  alias Hangman.Engine.{DynGameSup, GameServer}
 
   @ets get_env(:ets_name)
 
@@ -21,7 +19,7 @@ defmodule Hangman.Engine.GameRecovery do
     |> :ets.match_object({{GameServer, :_}, :_})
     |> Enum.each(fn {{GameServer, game_name}, _game} ->
       # Child may already be started...
-      DynamicSupervisor.start_child(GameSup, {GameServer, game_name})
+      DynamicSupervisor.start_child(DynGameSup, {GameServer, game_name})
     end)
   end
 

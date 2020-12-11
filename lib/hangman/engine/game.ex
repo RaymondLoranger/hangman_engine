@@ -1,6 +1,7 @@
 defmodule Hangman.Engine.Game do
   @moduledoc """
-  Implements a _Hangman Game_.
+  Creates a `game` struct for the _Hangman Game_.
+  Also implements the actions of a _Hangman Game_.
   """
 
   alias __MODULE__
@@ -25,9 +26,10 @@ defmodule Hangman.Engine.Game do
           turns_left: non_neg_integer,
           game_state: state,
           letters: [String.codepoint()],
-          used: MapSet.t(String.codepoint())
+          used: used
         }
   @type tally :: map
+  @type used :: MapSet.t(String.codepoint())
 
   @doc """
   Returns a new _Hangman Game_ with a `word` to be guessed.
@@ -69,7 +71,7 @@ defmodule Hangman.Engine.Game do
 
   ## Private functions
 
-  @spec reveal_guessed([String.codepoint()], MapSet.t()) :: [String.codepoint()]
+  @spec reveal_guessed([String.codepoint()], used) :: [String.codepoint()]
   defp reveal_guessed(letters, used) do
     letters |> Enum.map(&if MapSet.member?(used, &1), do: &1, else: "_")
   end

@@ -8,10 +8,10 @@ defmodule Hangman.Engine do
   ##### Based on the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
   """
 
-  alias __MODULE__.{Game, GameServer, GameSup}
+  alias __MODULE__.{DynGameSup, Game, GameServer}
 
   @doc """
-  Starts a new game.
+  Starts a new game server process and supervises it.
 
   ## Examples
 
@@ -23,11 +23,11 @@ defmodule Hangman.Engine do
   """
   @spec new_game(String.t()) :: Supervisor.on_start_child()
   def new_game(game_name) when is_binary(game_name) do
-    DynamicSupervisor.start_child(GameSup, {GameServer, game_name})
+    DynamicSupervisor.start_child(DynGameSup, {GameServer, game_name})
   end
 
   @doc """
-  Ends a game.
+  Stops a game server process normally. It won't be restarted.
 
   ## Examples
 
@@ -64,7 +64,7 @@ defmodule Hangman.Engine do
   end
 
   @doc """
-  Allows to guess the word of a game.
+  Guesses the word of a game.
 
   ## Examples
 
@@ -86,7 +86,7 @@ defmodule Hangman.Engine do
   end
 
   @doc """
-  Allows a player to guess a letter.
+  Lets a player suggest a guess letter.
 
   ## Examples
 

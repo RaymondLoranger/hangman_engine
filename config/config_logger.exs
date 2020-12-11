@@ -11,20 +11,24 @@ config :logger, :console,
 
 format = "$date $time [$level] $levelpad$message\n"
 
-error_path = "./log/error.log"
+debug_path = "./log/debug.log"
 info_path = "./log/info.log"
 warn_path = "./log/warn.log"
+error_path = "./log/error.log"
 
-config :logger, :error_log, format: format, path: error_path, level: :error
+config :logger, :console, format: format
+config :logger, :debug_log, format: format, path: debug_path, level: :debug
 config :logger, :info_log, format: format, path: info_path, level: :info
 config :logger, :warn_log, format: format, path: warn_path, level: :warn
+config :logger, :error_log, format: format, path: error_path, level: :error
 
 config :logger,
   backends: [
-    # :console,
-    {LoggerFileBackend, :error_log},
+    :console,
+    {LoggerFileBackend, :debug_log},
     {LoggerFileBackend, :info_log},
-    {LoggerFileBackend, :warn_log}
+    {LoggerFileBackend, :warn_log},
+    {LoggerFileBackend, :error_log}
   ]
 
 # Purges debug messages...
@@ -33,5 +37,9 @@ config :logger, compile_time_purge_matching: [[level_lower_than: :info]]
 # Keeps only error messages...
 # config :logger, compile_time_purge_matching: [[level_lower_than: :error]]
 
-# Uncomment to stop logging...
+# Logs only error messages...
 # config :logger, level: :error
+
+# truncate_default_in_bytes = 8 * 1024
+
+# config :logger, truncate: truncate_default_in_bytes * 2

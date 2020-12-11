@@ -1,11 +1,11 @@
-defmodule Hangman.Engine.GameSup do
+defmodule Hangman.Engine.DynGameSup do
   use DynamicSupervisor
 
   alias __MODULE__
 
   @spec start_link(term) :: Supervisor.on_start()
   def start_link(:ok),
-    do: DynamicSupervisor.start_link(GameSup, :ok, name: GameSup)
+    do: DynamicSupervisor.start_link(DynGameSup, :ok, name: DynGameSup)
 
   ## Callbacks
 
