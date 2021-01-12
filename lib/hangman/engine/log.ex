@@ -9,7 +9,7 @@ defmodule Hangman.Engine.Log do
     • Inside function:
       #{fun(env)}
     • Server:
-      #{game.game_name |> GameServer.via() |> inspect()}
+      #{GameServer.via(game.game_name) |> inspect()}
     • Server PID: #{self() |> inspect()}
     • 'terminate' reason: #{inspect(reason)}
     • Game being terminated:
@@ -24,7 +24,7 @@ defmodule Hangman.Engine.Log do
     • Inside function:
       #{fun(env)}
     • Server:
-      #{game.game_name |> GameServer.via() |> inspect()}
+      #{GameServer.via(game.game_name) |> inspect()}
     • Server PID: #{self() |> inspect()}
     • 'terminate' reason: #{inspect(reason)}
     • Game being terminated:
@@ -39,7 +39,7 @@ defmodule Hangman.Engine.Log do
     • Inside function:
       #{fun(env)}
     • Server:
-      #{game.game_name |> GameServer.via() |> inspect()}
+      #{GameServer.via(game.game_name) |> inspect()}
     • Server PID: #{self() |> inspect()}
     • 'handle_call' request:
       #{inspect(request)}
@@ -49,20 +49,20 @@ defmodule Hangman.Engine.Log do
     """
   end
 
-  info :spawned, {game_name, pid} do
+  info :spawned, {game_name} do
     """
     \nSpawned game server process...
     • Game name: #{game_name}
-    • Server PID: #{inspect(pid)}
+    • Server PID: #{self() |> inspect()}
     #{from()}
     """
   end
 
-  info :restarted, {game_name, pid} do
+  info :restarted, {game_name} do
     """
     \nRestarted game server process...
     • Game name: #{game_name}
-    • Server PID: #{inspect(pid)}
+    • Server PID: #{self() |> inspect()}
     #{from()}
     """
   end

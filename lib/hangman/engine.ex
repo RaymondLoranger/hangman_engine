@@ -21,7 +21,7 @@ defmodule Hangman.Engine do
       iex> is_pid(game_id)
       true
   """
-  @spec new_game(String.t()) :: Supervisor.on_start_child()
+  @spec new_game(Game.name()) :: Supervisor.on_start_child()
   def new_game(game_name) when is_binary(game_name) do
     DynamicSupervisor.start_child(DynGameSup, {GameServer, game_name})
   end
@@ -36,9 +36,9 @@ defmodule Hangman.Engine do
       iex> Engine.end_game("Ben")
       :ok
   """
-  @spec end_game(String.t()) :: :ok
+  @spec end_game(Game.name()) :: :ok
   def end_game(game_name) when is_binary(game_name) do
-    game_name |> GameServer.via() |> GenServer.stop(:shutdown)
+    GameServer.via(game_name) |> GenServer.stop(:shutdown)
   end
 
   @doc """
@@ -58,9 +58,9 @@ defmodule Hangman.Engine do
       iex> is_list(letters) and all_underscores?
       true
   """
-  @spec tally(String.t()) :: Game.tally()
+  @spec tally(Game.name()) :: Game.tally()
   def tally(game_name) when is_binary(game_name) do
-    game_name |> GameServer.via() |> GenServer.call(:tally)
+    GameServer.via(game_name) |> GenServer.call(:tally)
   end
 
   @doc """
@@ -80,9 +80,9 @@ defmodule Hangman.Engine do
       iex> is_list(letters) and no_underscores?
       true
   """
-  @spec guess_word(String.t()) :: Game.tally()
+  @spec guess_word(Game.name()) :: Game.tally()
   def guess_word(game_name) when is_binary(game_name) do
-    game_name |> GameServer.via() |> GenServer.call(:guess_word)
+    GameServer.via(game_name) |> GenServer.call(:guess_word)
   end
 
   @doc """
@@ -95,9 +95,9 @@ defmodule Hangman.Engine do
       iex> Engine.make_move("Ed", "a").game_state in [:good_guess, :bad_guess]
       true
   """
-  @spec make_move(String.t(), String.codepoint()) :: Game.tally()
+  @spec make_move(Game.name(), String.codepoint()) :: Game.tally()
   def make_move(game_name, guess)
       when is_binary(game_name) and is_binary(guess) do
-    game_name |> GameServer.via() |> GenServer.call({:make_move, guess})
+    GameServer.via(game_name) |> GenServer.call({:make_move, guess})
   end
 end

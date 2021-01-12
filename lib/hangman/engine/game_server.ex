@@ -13,30 +13,30 @@ defmodule Hangman.Engine.GameServer do
   # @reg get_env(:registry)
   @wait 500
 
-  @spec start_link(String.t()) :: GenServer.on_start()
+  @spec start_link(Game.name()) :: GenServer.on_start()
   def start_link(game_name),
     do: GenServer.start_link(GameServer, game_name, name: via(game_name))
 
-  # @spec via(String.t) :: {:via, module, {atom, tuple}}
+  # @spec via(Game.name()) :: {:via, module, {atom, tuple}}
   # def via(game_name), do: {:via, Registry, {@reg , key(game_name)}}
 
-  @spec via(String.t()) :: {:global, tuple}
+  @spec via(Game.name()) :: {:global, tuple}
   def via(game_name), do: {:global, key(game_name)}
 
   ## Private functions
 
-  @spec key(String.t()) :: tuple
+  @spec key(Game.name()) :: tuple
   defp key(game_name), do: {GameServer, game_name}
 
-  @spec game(String.t()) :: Game.t()
+  @spec game(Game.name()) :: Game.t()
   defp game(game_name) do
     case :ets.lookup(@ets, key(game_name)) do
       [] ->
-        :ok = Log.info(:spawned, {game_name, self()})
-        game_name |> Game.new() |> save(nil)
+        :ok = Log.info(:spawned, {game_name})
+        Game.new(game_name) |> save(nil)
 
       [{_key, game}] ->
-        :ok = Log.info(:restarted, {game_name, self()})
+        :ok = Log.info(:restarted, {game_name})
         game
     end
   end
@@ -50,18 +50,18 @@ defmodule Hangman.Engine.GameServer do
 
   ## Callbacks
 
-  @spec init(String.t()) :: {:ok, Game.t()}
+  @spec init(Game.name()) :: {:ok, Game.t()}
   def init(game_name), do: {:ok, game(game_name)}
 
   @spec handle_call(request :: term, GenServer.from(), Game.t()) ::
           {:reply, Game.tally(), Game.t()}
   def handle_call({:make_move, guess} = request, _from, game) do
-    game = game |> Game.make_move(guess) |> save(request)
+    game = Game.make_move(game, guess) |> save(request)
     {:reply, Game.tally(game), game}
   end
 
   def handle_call(:guess_word = request, _from, game) do
-    game = game |> Game.guess_word() |> save(request)
+    game = Game.guess_word(game) |> save(request)
     {:reply, Game.tally(game), game}
   end
 

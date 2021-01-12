@@ -14,6 +14,7 @@ defmodule Hangman.Engine.Game do
             letters: [],
             used: MapSet.new()
 
+  @type name :: String.t()
   @type state ::
           :initializing
           | :good_gess
@@ -22,12 +23,13 @@ defmodule Hangman.Engine.Game do
           | :lost
           | :won
   @type t :: %Game{
-          game_name: String.t(),
-          turns_left: non_neg_integer,
+          game_name: name,
+          turns_left: turns_left,
           game_state: state,
           letters: [String.codepoint()],
           used: used
         }
+  @type turns_left :: non_neg_integer
   @type tally :: map
   @type used :: MapSet.t(String.codepoint())
 
@@ -40,7 +42,7 @@ defmodule Hangman.Engine.Game do
       iex> Game.new("Mr. Smith").game_state
       :initializing
   """
-  @spec new(String.t(), String.t()) :: t
+  @spec new(name, String.t()) :: t
   def new(game_name, word \\ Dictionary.random_word()) do
     %Game{game_name: game_name, letters: String.codepoints(word)}
   end
