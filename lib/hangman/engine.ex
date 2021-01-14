@@ -77,7 +77,8 @@ defmodule Hangman.Engine do
       ...>   letters: letters
       ...> } = tally
       iex> no_underscores? = Enum.all?(letters, & &1 != "_")
-      iex> is_list(letters) and no_underscores?
+      iex> all_lowercase? = Enum.join(letters) |> String.match?(~r/[a-z]+/)
+      iex> is_list(letters) and no_underscores? and all_lowercase?
       true
   """
   @spec guess_word(Game.name()) :: Game.tally()

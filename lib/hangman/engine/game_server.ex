@@ -11,7 +11,7 @@ defmodule Hangman.Engine.GameServer do
 
   @ets get_env(:ets_name)
   # @reg get_env(:registry)
-  @wait 500
+  @wait 100
 
   @spec start_link(Game.name()) :: GenServer.on_start()
   def start_link(game_name),

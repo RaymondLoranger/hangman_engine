@@ -84,16 +84,14 @@ defmodule Hangman.Engine.Game do
   end
 
   defp accept_move(game, guess, _never_guessed) do
-    game.used
-    |> update_in(&MapSet.put(&1, guess))
+    update_in(game.used, &MapSet.put(&1, guess))
     |> score_guess(Enum.member?(game.letters, guess))
   end
 
   @spec score_guess(t, boolean) :: t
   defp score_guess(game, _good_guess = true) do
     state =
-      game.letters
-      |> MapSet.new()
+      MapSet.new(game.letters)
       |> MapSet.subset?(game.used)
       |> if(do: :won, else: :good_guess)
 
