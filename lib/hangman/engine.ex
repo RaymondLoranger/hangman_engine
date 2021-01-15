@@ -101,4 +101,9 @@ defmodule Hangman.Engine do
       when is_binary(game_name) and is_binary(guess) do
     GameServer.via(game_name) |> GenServer.call({:make_move, guess})
   end
+
+  @doc """
+  Generates a random game name.
+  """
+  defdelegate game_name, to: Game, as: :name
 end

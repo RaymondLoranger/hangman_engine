@@ -30,7 +30,11 @@ defmodule Hangman.Engine.Game do
           used: used
         }
   @type turns_left :: non_neg_integer
-  @type tally :: map
+  @type tally :: %{
+          game_state: state,
+          turns_left: turns_left,
+          letters: [String.codepoint()]
+        }
   @type used :: MapSet.t(String.codepoint())
 
   @doc """
@@ -45,6 +49,19 @@ defmodule Hangman.Engine.Game do
   @spec new(name, String.t()) :: t
   def new(game_name, word \\ Dictionary.random_word()) do
     %Game{game_name: game_name, letters: String.codepoints(word)}
+  end
+
+  @doc """
+  Generates a random name.
+  """
+  @spec name :: name
+  def name do
+    length = Enum.random(4..10)
+
+    :crypto.strong_rand_bytes(length)
+    |> Base.url_encode64()
+    # Starting at 0 with length "length"...
+    |> binary_part(0, length)
   end
 
   @spec make_move(t, String.codepoint()) :: t
