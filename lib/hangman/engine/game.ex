@@ -17,7 +17,7 @@ defmodule Hangman.Engine.Game do
   @type name :: String.t()
   @type state ::
           :initializing
-          | :good_gess
+          | :good_guess
           | :bad_guess
           | :already_used
           | :lost
@@ -29,12 +29,12 @@ defmodule Hangman.Engine.Game do
           letters: [String.codepoint()],
           used: used
         }
-  @type turns_left :: non_neg_integer
   @type tally :: %{
           game_state: state,
           turns_left: turns_left,
           letters: [String.codepoint()]
         }
+  @type turns_left :: non_neg_integer
   @type used :: MapSet.t(String.codepoint())
 
   @doc """
