@@ -105,5 +105,5 @@ defmodule Hangman.Engine do
   @doc """
   Generates a random game name.
   """
-  defdelegate game_name, to: Game, as: :name
+  defdelegate random_game_name, to: Game, as: :random_name
 end

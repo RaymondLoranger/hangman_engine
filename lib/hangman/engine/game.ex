@@ -54,8 +54,8 @@ defmodule Hangman.Engine.Game do
   @doc """
   Generates a random name.
   """
-  @spec name :: name
-  def name do
+  @spec random_name :: name
+  def random_name do
     length = Enum.random(4..10)
 
     :crypto.strong_rand_bytes(length)
