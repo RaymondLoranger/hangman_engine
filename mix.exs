@@ -4,7 +4,7 @@ defmodule Hangman.Engine.Mixfile do
   def project do
     [
       app: :hangman_engine,
-      version: "0.1.23",
+      version: "0.1.24",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       deps: deps()
@@ -27,8 +27,6 @@ defmodule Hangman.Engine.Mixfile do
       {:file_only_logger, "~> 0.1"},
       {:hangman_dictionary, github: "RaymondLoranger/hangman_dictionary"},
       {:log_reset, "~> 0.1"},
-      {:mix_tasks,
-       github: "RaymondLoranger/mix_tasks", only: :dev, runtime: false},
       {:persist_config, "~> 0.4", runtime: false}
     ]
   end
