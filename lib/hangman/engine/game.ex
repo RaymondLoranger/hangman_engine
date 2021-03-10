@@ -32,7 +32,8 @@ defmodule Hangman.Engine.Game do
   @type tally :: %{
           game_state: state,
           turns_left: turns_left,
-          letters: [String.codepoint()]
+          letters: [String.codepoint()],
+          guesses: [String.codepoint()]
         }
   @type turns_left :: non_neg_integer
   @type used :: MapSet.t(String.codepoint())
@@ -84,7 +85,8 @@ defmodule Hangman.Engine.Game do
     %{
       game_state: game.game_state,
       turns_left: game.turns_left,
-      letters: reveal_guessed(game.letters, game.used)
+      letters: reveal_guessed(game.letters, game.used),
+      guesses: MapSet.to_list(game.used)
     }
   end
 
