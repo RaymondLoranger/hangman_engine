@@ -60,11 +60,6 @@ defmodule Hangman.Engine.GameServer do
     {:reply, Game.tally(game), game}
   end
 
-  def handle_call(:guess_word = request, _from, game) do
-    game = Game.guess_word(game) |> save(request)
-    {:reply, Game.tally(game), game}
-  end
-
   def handle_call(:tally, _from, game), do: {:reply, Game.tally(game), game}
 
   @spec terminate(term, Game.t()) :: :ok

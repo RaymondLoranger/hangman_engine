@@ -14,6 +14,7 @@ defmodule Hangman.Engine.Game do
             letters: [],
             used: MapSet.new()
 
+  @type letter :: String.codepoint()
   @type name :: String.t()
   @type state ::
           :initializing
@@ -26,17 +27,17 @@ defmodule Hangman.Engine.Game do
           game_name: name,
           turns_left: turns_left,
           game_state: state,
-          letters: [String.codepoint()],
+          letters: [letter],
           used: used
         }
   @type tally :: %{
           game_state: state,
           turns_left: turns_left,
-          letters: [String.codepoint()],
-          guesses: [String.codepoint()]
+          letters: [letter | charlist],
+          guesses: [letter]
         }
   @type turns_left :: non_neg_integer
-  @type used :: MapSet.t(String.codepoint())
+  @type used :: MapSet.t(letter)
 
   @doc """
   Returns a new _Hangman Game_ with a `word` to be guessed.
@@ -65,65 +66,57 @@ defmodule Hangman.Engine.Game do
     |> binary_part(0, length)
   end
 
-  @spec make_move(t, String.codepoint()) :: t
-  def make_move(%Game{game_state: state} = game, _guess)
-      when state in [:won, :lost],
-      do: game
+  @spec make_move(t, guess :: letter) :: t
+  def make_move(%Game{game_state: state} = game, _) when state in [:won, :lost],
+    do: game
 
   # Guess not validated here; should be done in client interface...
-  def make_move(%Game{} = game, guess) do
-    accept_move(game, guess, MapSet.member?(game.used, guess))
-  end
-
-  @spec guess_word(t) :: t
-  def guess_word(%Game{letters: letters, used: used} = game) do
-    %Game{game | used: MapSet.union(used, MapSet.new(letters))}
-  end
+  def make_move(%Game{used: used} = game, guess),
+    do: accept_move(game, guess, MapSet.member?(used, guess))
 
   @spec tally(t) :: tally
-  def tally(%Game{} = game) do
+  def tally(%Game{game_state: game_state, turns_left: turns_left} = game) do
     %{
-      game_state: game.game_state,
-      turns_left: game.turns_left,
-      letters: reveal_guessed(game.letters, game.used),
+      game_state: game_state,
+      turns_left: turns_left,
+      letters: reveal_guessed(game_state, game.letters, game.used),
       guesses: MapSet.to_list(game.used)
     }
   end
 
   ## Private functions
 
-  @spec reveal_guessed([String.codepoint()], used) :: [String.codepoint()]
-  defp reveal_guessed(letters, used) do
-    letters |> Enum.map(&if MapSet.member?(used, &1), do: &1, else: "_")
-  end
+  @spec reveal_guessed(state, [letter], used) :: [letter | charlist]
+  defp reveal_guessed(:lost, letters, used),
+    do: letters |> Enum.map(&if MapSet.member?(used, &1), do: &1, else: '#{&1}')
 
-  @spec accept_move(t, String.codepoint(), boolean) :: t
-  defp accept_move(game, _guess, _already_guessed = true) do
-    put_in(game.game_state, :already_used)
-  end
+  defp reveal_guessed(_game_state, letters, used),
+    do: letters |> Enum.map(&if MapSet.member?(used, &1), do: &1, else: "_")
+
+  @spec accept_move(t, letter, boolean) :: t
+  defp accept_move(game, _guess, _already_guessed = true),
+    do: put_in(game.game_state, :already_used)
 
   defp accept_move(game, guess, _never_guessed) do
     update_in(game.used, &MapSet.put(&1, guess))
-    |> score_guess(Enum.member?(game.letters, guess))
+    |> score_guess(guess in game.letters)
   end
 
   @spec score_guess(t, boolean) :: t
   defp score_guess(game, _good_guess = true) do
     state =
-      MapSet.new(game.letters)
-      |> MapSet.subset?(game.used)
-      |> if(do: :won, else: :good_guess)
+      if MapSet.new(game.letters) |> MapSet.subset?(game.used),
+        do: :won,
+        else: :good_guess
 
     put_in(game.game_state, state)
   end
 
-  defp score_guess(%Game{turns_left: 1} = game, _bad_guess) do
-    %Game{game | game_state: :lost, turns_left: 0}
-  end
+  defp score_guess(%Game{turns_left: 1} = game, _bad_guess),
+    do: %Game{game | game_state: :lost, turns_left: 0}
 
   defp score_guess(%Game{turns_left: 0} = game, _bad_guess), do: game
 
-  defp score_guess(%Game{turns_left: turns_left} = game, _bad_guess) do
-    %Game{game | game_state: :bad_guess, turns_left: turns_left - 1}
-  end
+  defp score_guess(%Game{turns_left: turns_left} = game, _bad_guess),
+    do: %Game{game | game_state: :bad_guess, turns_left: turns_left - 1}
 end
