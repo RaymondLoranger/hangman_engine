@@ -7,7 +7,8 @@ defmodule Hangman.Engine.GameServer do
   use PersistConfig
 
   alias __MODULE__
-  alias Hangman.Engine.{Game, Log}
+  alias Hangman.Engine.Log
+  alias Hangman.Game
 
   @ets get_env(:ets_name)
   # @reg get_env(:registry)

@@ -8,7 +8,8 @@ defmodule Hangman.Engine do
   ##### Based on the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
   """
 
-  alias __MODULE__.{DynGameSup, Game, GameServer}
+  alias __MODULE__.{DynGameSup, GameServer}
+  alias Hangman.Game
 
   @doc """
   Starts a new game server process and supervises it.
@@ -78,9 +79,4 @@ defmodule Hangman.Engine do
       when is_binary(game_name) and is_binary(guess) do
     GameServer.via(game_name) |> GenServer.call({:make_move, guess})
   end
-
-  @doc """
-  Generates a random game name.
-  """
-  defdelegate random_game_name, to: Game, as: :random_name
 end
