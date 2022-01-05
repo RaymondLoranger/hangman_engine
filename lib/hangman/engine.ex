@@ -3,7 +3,7 @@
 # └──────────────────────────────────────────────────────────────┘
 defmodule Hangman.Engine do
   @moduledoc """
-  Models the _Hangman Game_.
+  Models the _Hangman Game_. Times out after 30 minutes of inactivity.
 
   ##### Based on the course [Elixir for Programmers](https://codestool.coding-gnome.com/courses/elixir-for-programmers) by Dave Thomas.
   """

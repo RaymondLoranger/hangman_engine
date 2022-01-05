@@ -1,6 +1,7 @@
 defmodule Hangman.Engine.GameServer do
   @moduledoc """
   A server process that holds a game struct as its state.
+  Times out after 30 minutes of inactivity.
   """
 
   use GenServer, restart: :transient
