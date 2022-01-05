@@ -6,64 +6,51 @@ defmodule Hangman.Engine.Log do
   error :terminate, {reason, game, env} do
     """
     \nTerminating game...
-    • Inside function:
-      #{fun(env)}
-    • Server:
-      #{GameServer.via(game.game_name) |> inspect()}
+    • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • 'terminate' reason: #{inspect(reason)}
-    • Game being terminated:
-      #{inspect(game)}
-    #{from()}
+    • 'terminate' reason: #{inspect(reason) |> maybe_break(22)}
+    • Game being terminated: #{inspect(game) |> maybe_break(25)}
+    #{from(env, __MODULE__)}
     """
   end
 
   info :terminate, {reason, game, env} do
     """
     \nTerminating game...
-    • Inside function:
-      #{fun(env)}
-    • Server:
-      #{GameServer.via(game.game_name) |> inspect()}
+    • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • 'terminate' reason: #{inspect(reason)}
-    • Game being terminated:
-      #{inspect(game)}
-    #{from()}
+    • 'terminate' reason: #{inspect(reason) |> maybe_break(22)}
+    • Game being terminated: #{inspect(game) |> maybe_break(25)}
+    #{from(env, __MODULE__)}
     """
   end
 
   info :save, {game, request, env} do
     """
     \nSaving game...
-    • Inside function:
-      #{fun(env)}
-    • Server:
-      #{GameServer.via(game.game_name) |> inspect()}
+    • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • 'handle_call' request:
-      #{inspect(request)}
-    • Game being saved:
-      #{inspect(game)}
-    #{from()}
+    • 'handle_call' request: #{inspect(request) |> maybe_break(25)}
+    • Game being saved: #{inspect(game) |> maybe_break(20)}
+    #{from(env, __MODULE__)}
     """
   end
 
-  info :spawned, {game_name} do
+  info :spawned, {game_name, env} do
     """
     \nSpawned game server process...
     • Game name: #{game_name}
     • Server PID: #{self() |> inspect()}
-    #{from()}
+    #{from(env, __MODULE__)}
     """
   end
 
-  info :restarted, {game_name} do
+  info :restarted, {game_name, env} do
     """
     \nRestarted game server process...
     • Game name: #{game_name}
     • Server PID: #{self() |> inspect()}
-    #{from()}
+    #{from(env, __MODULE__)}
     """
   end
 end

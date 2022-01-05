@@ -53,10 +53,11 @@ defmodule Hangman.Engine do
       iex> %{
       ...>   game_state: :initializing,
       ...>   turns_left: 7,
-      ...>   letters: letters
+      ...>   letters: letters,
+      ...>   guesses: []
       ...> } = tally
       iex> all_underscores? = Enum.all?(letters, & &1 == "_")
-      iex> is_list(letters) and all_underscores?
+      iex> is_list(letters) and length(letters) > 0 and all_underscores?
       true
   """
   @spec tally(Game.name()) :: Game.tally()
@@ -65,7 +66,7 @@ defmodule Hangman.Engine do
   end
 
   @doc """
-  Lets a player suggest a guess letter.
+  Makes a move by guessing a letter.
 
   ## Examples
 
