@@ -75,7 +75,7 @@ defmodule Hangman.Engine do
       iex> Engine.make_move("Ed", "a").game_state in [:good_guess, :bad_guess]
       true
   """
-  @spec make_move(Game.name(), String.codepoint()) :: Game.tally()
+  @spec make_move(Game.name(), Game.letter()) :: Game.tally()
   def make_move(game_name, guess)
       when is_binary(game_name) and is_binary(guess) do
     GameServer.via(game_name) |> GenServer.call({:make_move, guess})
