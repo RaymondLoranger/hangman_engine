@@ -6,8 +6,7 @@ Models the _Hangman Game_.
 
 ## Installation
 
-If [available in Hex](https://hex.pm/docs/publish), the package can be installed
-by adding `hangman_engine` to your list of dependencies in `mix.exs`:
+Add `hangman_engine` to your list of dependencies in `mix.exs`:
 
 ```elixir
 def deps do
@@ -17,7 +16,18 @@ def deps do
 end
 ```
 
-Documentation can be generated with [ExDoc](https://github.com/elixir-lang/ex_doc)
-and published on [HexDocs](https://hexdocs.pm). Once published, the docs can
-be found at [https://hexdocs.pm/hangman](https://hexdocs.pm/hangman).
+## Supervision Tree
 
+The highlighted processes below (supervisor and servers) are fault-tolerant:
+if any crashes (or is killed), it is immediately restarted and the system
+remains undisturbed.
+
+The processes identified by their PIDs are Game Servers: each holds the state of
+a _Game of Islands_. Multiple games can be played simultaneously.
+
+## ![engine_app](images/hangman_engine_app.png)
+
+## Note
+
+Package [Hangman Text Client](https://hex.pm/packages/hangman_text_client) uses
+`hangman_engine` as a dependency to play the _Hangman Game_ in the console.
