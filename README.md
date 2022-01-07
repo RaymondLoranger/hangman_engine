@@ -23,7 +23,7 @@ if any crashes (or is killed), it is immediately restarted and the system
 remains undisturbed.
 
 The processes identified by their PIDs are Game Servers: each holds the state of
-a _Game of Islands_. Multiple games can be played simultaneously.
+a _Hangman Game_. Multiple games can be played simultaneously.
 
 ## ![engine_app](images/hangman_engine_app.png)
 
