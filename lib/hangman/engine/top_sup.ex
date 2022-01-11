@@ -11,7 +11,10 @@ defmodule Hangman.Engine.TopSup do
   # @impl Application
   @spec start(Application.start_type(), term) :: {:ok, pid}
   def start(_start_type, :ok = _start_args) do
-    :ets.new(@ets, [:public, :named_table])
+    case :ets.whereis(@ets) do
+      :undefined -> :ets.new(@ets, [:public, :named_table])
+      ets_reference -> ets_reference
+    end
 
     [
       # {Registry, keys: :unique, name: @reg},
