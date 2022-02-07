@@ -20,7 +20,7 @@ defmodule Hangman.Engine.GameServer do
   Spawns a game server process to be registered via `game_name`.
   """
   @spec start_link(Game.name()) :: GenServer.on_start()
-  def start_link(game_name = _init_arg),
+  def start_link(game_name),
     do: GenServer.start_link(GameServer, game_name, name: via(game_name))
 
   # @spec via(Game.name()) :: {:via, Registry, tuple}

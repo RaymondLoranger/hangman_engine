@@ -4,10 +4,10 @@ defmodule Hangman.Engine.Mixfile do
   def project do
     [
       app: :hangman_engine,
-      version: "0.1.44",
+      version: "0.1.45",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
-      name: "Hangman Game",
+      name: "Hangman Engine",
       source_url: source_url(),
       description: description(),
       package: package(),
