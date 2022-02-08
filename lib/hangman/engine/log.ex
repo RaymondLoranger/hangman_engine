@@ -53,4 +53,14 @@ defmodule Hangman.Engine.Log do
     #{from(env, __MODULE__)}
     """
   end
+
+  info :timeout, {timeout, game, env} do
+    """
+    \nGame server process timed out...
+    • Game name: #{game.game_name}
+    • Timeout: #{round(timeout / 1000 / 60)} min
+    • Server PID: #{self() |> inspect()}
+    #{from(env, __MODULE__)}
+    """
+  end
 end

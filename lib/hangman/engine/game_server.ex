@@ -74,7 +74,11 @@ defmodule Hangman.Engine.GameServer do
 
   @spec handle_info(msg :: :timeout | term, Game.t()) ::
           {:stop, reason :: tuple, Game.t()} | {:noreply, Game.t()}
-  def handle_info(:timeout, game), do: {:stop, {:shutdown, :timeout}, game}
+  def handle_info(:timeout, game) do
+    :ok = Log.info(:timeout, {@timeout, game, __ENV__})
+    {:stop, {:shutdown, :timeout}, game}
+  end
+
   def handle_info(_message, game), do: {:noreply, game}
 
   @spec terminate(term, Game.t()) :: :ok
