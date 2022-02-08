@@ -3,7 +3,7 @@ defmodule Hangman.Engine.TopSup do
   use PersistConfig
 
   alias __MODULE__
-  alias Hangman.Engine.{GameRecovery, DynGameSup}
+  alias Hangman.Engine.{DynGameSup, GameRecovery}
 
   @ets get_env(:ets_name)
   # @reg get_env(:registry)
