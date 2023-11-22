@@ -11,7 +11,7 @@ defmodule Hangman.Engine.Log do
     • Callback: 'terminate/2'
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -23,7 +23,7 @@ defmodule Hangman.Engine.Log do
     • Callback: 'terminate/2'
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -34,7 +34,7 @@ defmodule Hangman.Engine.Log do
     • Server PID: #{self() |> inspect()}
     • Callback: 'init/1'
     • Game being saved: #{inspect(game) |> maybe_break(20)}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -46,7 +46,7 @@ defmodule Hangman.Engine.Log do
     • Callback: 'handle_call/3'
     • Request: #{inspect(request) |> maybe_break(11)}
     • Game being saved: #{inspect(game) |> maybe_break(20)}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -55,7 +55,7 @@ defmodule Hangman.Engine.Log do
     \nSpawned game server process...
     • Game name: #{game_name}
     • Server PID: #{self() |> inspect()}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -64,7 +64,7 @@ defmodule Hangman.Engine.Log do
     \nRestarted game server process...
     • Game name: #{game_name}
     • Server PID: #{self() |> inspect()}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 
@@ -74,7 +74,7 @@ defmodule Hangman.Engine.Log do
     • Game name: #{game.game_name}
     • Timeout: #{round(timeout / 1000 / 60)} min
     • Server PID: #{self() |> inspect()}
-    #{from(env, __MODULE__)}
+    #{from(env, __MODULE__)}\
     """
   end
 end
