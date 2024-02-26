@@ -76,8 +76,8 @@ defmodule Hangman.Engine do
       true
   """
   @spec make_move(Game.name(), Game.letter()) :: Game.tally()
-  def make_move(game_name, guess)
-      when is_binary(game_name) and is_binary(guess) do
+  def make_move(game_name, <<byte>> = guess)
+      when is_binary(game_name) and byte in ?a..?z do
     GameServer.via(game_name) |> GenServer.call({:make_move, guess})
   end
 end
