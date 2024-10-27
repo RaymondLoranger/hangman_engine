@@ -14,7 +14,7 @@ defmodule Hangman.Engine.GameServer do
   @ets get_env(:ets_name)
   # @reg get_env(:registry)
   @timeout :timer.minutes(30)
-  @wait 100
+  # @wait 100
 
   @doc """
   Spawns a game server process to be registered via `game_name`.
@@ -37,19 +37,6 @@ defmodule Hangman.Engine.GameServer do
   @spec key(Game.name()) :: tuple
   defp key(game_name), do: {GameServer, game_name}
 
-  @spec game(Game.name()) :: Game.t()
-  defp game(game_name) do
-    case :ets.lookup(@ets, key(game_name)) do
-      [] ->
-        :ok = Log.info(:spawned, {game_name, __ENV__})
-        Game.new(game_name) |> save(nil)
-
-      [{_key, game}] ->
-        :ok = Log.info(:restarted, {game_name, __ENV__})
-        game
-    end
-  end
-
   @spec save(Game.t(), term) :: Game.t()
   defp save(game, request) do
     :ok = Log.info(:save, {game, request, __ENV__})
@@ -60,7 +47,20 @@ defmodule Hangman.Engine.GameServer do
   ## Callbacks
 
   @spec init(Game.name()) :: {:ok, Game.t(), timeout}
-  def init(game_name), do: {:ok, game(game_name), @timeout}
+  def init(game_name) do
+    game =
+      case :ets.lookup(@ets, key(game_name)) do
+        [] ->
+          :ok = Log.info(:spawned, {game_name, __ENV__})
+          Game.new(game_name) |> save(nil)
+
+        [{_key, game}] ->
+          :ok = Log.info(:restarted, {game, __ENV__})
+          game
+      end
+
+    {:ok, game, @timeout}
+  end
 
   @spec handle_call(request :: term, GenServer.from(), Game.t()) ::
           {:reply, Game.tally(), Game.t(), timeout}
@@ -81,19 +81,19 @@ defmodule Hangman.Engine.GameServer do
 
   def handle_info(_message, game), do: {:noreply, game}
 
-  @spec terminate(term, Game.t()) :: :ok
+  @spec terminate(term, Game.t()) :: true
   def terminate(reason, game)
       when reason in [:shutdown, {:shutdown, :timeout}] do
     :ok = Log.info(:terminate, {reason, game, __ENV__})
     true = :ets.delete(@ets, key(game.game_name))
     # Ensure message logged before exiting...
-    Process.sleep(@wait)
+    # Process.sleep(@wait)
   end
 
   def terminate(reason, game) do
     :ok = Log.error(:terminate, {reason, game, __ENV__})
     true = :ets.delete(@ets, key(game.game_name))
     # Ensure message logged before exiting...
-    Process.sleep(@wait)
+    # Process.sleep(@wait)
   end
 end

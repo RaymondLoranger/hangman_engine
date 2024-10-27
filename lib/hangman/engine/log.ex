@@ -8,7 +8,6 @@ defmodule Hangman.Engine.Log do
     \nTerminating game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • Callback: 'terminate/2'
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
     #{from(env, __MODULE__)}\
@@ -20,20 +19,8 @@ defmodule Hangman.Engine.Log do
     \nTerminating game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • Callback: 'terminate/2'
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
-    #{from(env, __MODULE__)}\
-    """
-  end
-
-  info :save, {game, nil, env} do
-    """
-    \nSaving game...
-    • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
-    • Server PID: #{self() |> inspect()}
-    • Callback: 'init/1'
-    • Game being saved: #{inspect(game) |> maybe_break(20)}
     #{from(env, __MODULE__)}\
     """
   end
@@ -43,7 +30,6 @@ defmodule Hangman.Engine.Log do
     \nSaving game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
-    • Callback: 'handle_call/3'
     • Request: #{inspect(request) |> maybe_break(11)}
     • Game being saved: #{inspect(game) |> maybe_break(20)}
     #{from(env, __MODULE__)}\
@@ -59,11 +45,12 @@ defmodule Hangman.Engine.Log do
     """
   end
 
-  info :restarted, {game_name, env} do
+  info :restarted, {game, env} do
     """
     \nRestarted game server process...
-    • Game name: #{game_name}
+    • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
     • Server PID: #{self() |> inspect()}
+    • Game being restarted: #{inspect(game) |> maybe_break(24)}
     #{from(env, __MODULE__)}\
     """
   end
