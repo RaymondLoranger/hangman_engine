@@ -9,7 +9,7 @@ defmodule Hangman.Engine.GameServer do
 
   alias __MODULE__
   alias Hangman.Engine.Log
-  alias Hangman.Game
+  alias Hangman.{Dictionary, Game}
 
   @ets get_env(:ets_name)
   # @reg get_env(:registry)
@@ -52,7 +52,7 @@ defmodule Hangman.Engine.GameServer do
       case :ets.lookup(@ets, key(game_name)) do
         [] ->
           :ok = Log.info(:spawned, {game_name, __ENV__})
-          Game.new(game_name) |> save(nil)
+          Game.new(game_name, Dictionary.random_word()) |> save(nil)
 
         [{_key, game}] ->
           :ok = Log.info(:restarted, {game, __ENV__})
