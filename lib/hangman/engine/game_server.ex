@@ -69,6 +69,11 @@ defmodule Hangman.Engine.GameServer do
     {:reply, Game.tally(game), game, @timeout}
   end
 
+  def handle_call(:resign = request, _from, game) do
+    game = Game.resign(game) |> save(request)
+    {:reply, Game.tally(game), game, @timeout}
+  end
+
   def handle_call(:tally, _from, game),
     do: {:reply, Game.tally(game), game, @timeout}
 

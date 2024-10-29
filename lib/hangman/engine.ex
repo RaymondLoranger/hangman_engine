@@ -80,4 +80,26 @@ defmodule Hangman.Engine do
       when is_binary(game_name) and byte in ?a..?z do
     GameServer.via(game_name) |> GenServer.call({:make_move, guess})
   end
+
+  @doc """
+  Resigns game `game_name`.
+
+  ## Examples
+
+      iex> alias Hangman.Engine
+      iex> Engine.new_game("Jay")
+      iex> tally = Engine.resign("Jay")
+      iex> %{
+      ...>   game_state: :lost,
+      ...>   turns_left: 7,
+      ...>   letters: letters,
+      ...>   guesses: []
+      ...> } = tally
+      iex> Enum.all?(letters, fn [<<byte>>] -> byte in ?a..?z end)
+      true
+  """
+  @spec resign(Game.name()) :: Game.tally()
+  def resign(game_name) when is_binary(game_name) do
+    GameServer.via(game_name) |> GenServer.call(:resign)
+  end
 end
