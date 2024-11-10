@@ -82,7 +82,7 @@ defmodule Hangman.Engine do
   end
 
   @doc """
-  Resigns game `game_name`.
+  Resigns a game.
 
   ## Examples
 

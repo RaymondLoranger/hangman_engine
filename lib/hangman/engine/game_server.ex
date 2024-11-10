@@ -52,7 +52,7 @@ defmodule Hangman.Engine.GameServer do
       case :ets.lookup(@ets, key(game_name)) do
         [] ->
           :ok = Log.info(:spawned, {game_name, __ENV__})
-          Game.new(game_name, Dictionary.random_word()) |> save(nil)
+          Dictionary.random_word() |> Game.new(game_name) |> save(nil)
 
         [{_key, game}] ->
           :ok = Log.info(:restarted, {game, __ENV__})
