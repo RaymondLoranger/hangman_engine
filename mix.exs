@@ -4,7 +4,7 @@ defmodule Hangman.Engine.Mixfile do
   def project do
     [
       app: :hangman_engine,
-      version: "0.1.73",
+      version: "0.1.74",
       elixir: "~> 1.11",
       start_permanent: Mix.env() == :prod,
       name: "Hangman Engine",
@@ -27,7 +27,7 @@ defmodule Hangman.Engine.Mixfile do
 
   defp package do
     [
-      files: ["lib", "mix.exs", "README*", "config/persist*.exs"],
+      files: ~w[lib image/*.png mix.exs README* config/persist*.exs],
       maintainers: ["Raymond Loranger"],
       licenses: ["MIT"],
       links: %{"GitHub" => source_url()}

@@ -13,6 +13,7 @@ defmodule Hangman.Engine.DynGameSup do
 
   ## Callbacks
 
+  @impl DynamicSupervisor
   @spec init(term) :: {:ok, DynamicSupervisor.sup_flags()} | :ignore
   def init(_arg = :ok), do: DynamicSupervisor.init(strategy: :one_for_one)
 end

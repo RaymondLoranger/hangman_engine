@@ -16,20 +16,19 @@ defmodule Hangman.Engine.GameRecovery do
   def start_link(_init_arg = :ok),
     do: GenServer.start_link(GameRecovery, :ok, name: GameRecovery)
 
+  ## Callbacks
+
+  @spec init(term) :: {:ok, term}
+  def init(_init_arg = :ok), do: {:ok, restart_servers()}
+
   ## Private functions
 
   @spec restart_servers :: :ok
   defp restart_servers do
-    @ets
-    |> :ets.match_object({{GameServer, :_}, :_})
+    :ets.match_object(@ets, {{GameServer, :_}, :_})
     |> Enum.each(fn {{GameServer, game_name}, _game} ->
       # Child may already be started...
       DynamicSupervisor.start_child(DynGameSup, {GameServer, game_name})
     end)
   end
-
-  ## Callbacks
-
-  @spec init(term) :: {:ok, term}
-  def init(_init_arg = :ok), do: {:ok, restart_servers()}
 end

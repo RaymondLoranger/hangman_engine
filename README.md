@@ -25,6 +25,8 @@ remains undisturbed.
 The processes identified by their PIDs are game servers: each holds a game
 struct as its state. Multiple games can be played simultaneously.
 
+You can click on the image below for a clearer view if on GitHub.
+
 ## ![engine_app](images/hangman_engine_app.png)
 
 ## Note

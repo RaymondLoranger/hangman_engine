@@ -32,20 +32,9 @@ defmodule Hangman.Engine.GameServer do
   @spec via(Game.name()) :: {:global, tuple}
   def via(game_name), do: {:global, key(game_name)}
 
-  ## Private functions
-
-  @spec key(Game.name()) :: tuple
-  defp key(game_name), do: {GameServer, game_name}
-
-  @spec save(Game.t(), term) :: Game.t()
-  defp save(game, request) do
-    :ok = Log.info(:save, {game, request, __ENV__})
-    true = :ets.insert(@ets, {key(game.game_name), game})
-    game
-  end
-
   ## Callbacks
 
+  @dialyzer {:no_opaque, [init: 1]}
   @spec init(Game.name()) :: {:ok, Game.t(), timeout}
   def init(game_name) do
     game =
@@ -100,5 +89,18 @@ defmodule Hangman.Engine.GameServer do
     true = :ets.delete(@ets, key(game.game_name))
     # Ensure message logged before exiting...
     # Process.sleep(@wait)
+  end
+
+  ## Private functions
+
+  @spec key(Game.name()) :: tuple
+  defp key(game_name), do: {GameServer, game_name}
+
+  @dialyzer {:no_opaque, [save: 2]}
+  @spec save(Game.t(), term) :: Game.t()
+  defp save(game, request) do
+    :ok = Log.info(:save, {game, request, __ENV__})
+    true = :ets.insert(@ets, {key(game.game_name), game})
+    game
   end
 end
