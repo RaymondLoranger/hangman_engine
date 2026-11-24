@@ -7,7 +7,7 @@ defmodule Hangman.Engine.Log do
     """
     \nTerminating game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
     #{from(env, __MODULE__)}\
@@ -18,7 +18,7 @@ defmodule Hangman.Engine.Log do
     """
     \nTerminating game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     • Reason: #{inspect(reason) |> maybe_break(10)}
     • Game being terminated: #{inspect(game) |> maybe_break(25)}
     #{from(env, __MODULE__)}\
@@ -29,7 +29,7 @@ defmodule Hangman.Engine.Log do
     """
     \nSaving game...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     • Request: #{inspect(request) |> maybe_break(11)}
     • Game being saved: #{inspect(game) |> maybe_break(20)}
     #{from(env, __MODULE__)}\
@@ -40,7 +40,7 @@ defmodule Hangman.Engine.Log do
     """
     \nSpawned game server process...
     • Game name: #{game_name}
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     #{from(env, __MODULE__)}\
     """
   end
@@ -49,7 +49,7 @@ defmodule Hangman.Engine.Log do
     """
     \nRestarted game server process...
     • Server: #{GameServer.via(game.game_name) |> inspect() |> maybe_break(10)}
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     • Game being restarted: #{inspect(game) |> maybe_break(24)}
     #{from(env, __MODULE__)}\
     """
@@ -60,7 +60,7 @@ defmodule Hangman.Engine.Log do
     \nGame server process timed out...
     • Game name: #{game.game_name}
     • Timeout: #{round(timeout / 1000 / 60)} min
-    • Server PID: #{self() |> inspect()}
+    • Server PID: #{inspect(self())}
     #{from(env, __MODULE__)}\
     """
   end
